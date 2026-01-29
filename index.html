@@ -155,31 +155,6 @@
             margin: 0 auto;
             font-size: 1.2rem;
         }
-        /* Signature Dishes */
-        #signature {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            animation: fadeIn 1s ease-in;
-        }
-        .dish-card {
-            background: #001f3f; /* Logo navy */
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-        .dish-card:hover {
-            transform: scale(1.05);
-        }
-        .dish-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .dish-card h3 {
-            padding: 20px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
         /* Menu Section */
         #menu {
             text-align: center;
@@ -903,15 +878,6 @@
             // Menu images
             document.querySelectorAll('.menu-images img')[0].src = data.image2menu || data.image2; // Fallback if key is image2
             document.querySelectorAll('.menu-images img')[1].src = data.image3menu || data.image3; // Fallback if key is image3
-            // Signature dishes
-            document.querySelectorAll('.dish-card img')[0].src = data.image4;
-            document.querySelectorAll('.dish-card img')[1].src = data.image5;
-            document.querySelectorAll('.dish-card img')[2].src = data.image6;
-            // Gallery
-            document.querySelectorAll('.gallery-item img')[0].src = data.image4;
-            document.querySelectorAll('.gallery-item img')[1].src = data.image5;
-            document.querySelectorAll('.gallery-item img')[2].src = data.image6;
-            document.querySelectorAll('.gallery-item img')[3].src = data.image7;
             // Parallax background for signature (using one food image as example)
             document.getElementById('signature').style.backgroundImage = `url(${data.image7})`;
         });
