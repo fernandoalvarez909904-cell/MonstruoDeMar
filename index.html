@@ -8,10 +8,211 @@
     <title>Monstruo de Mar - Luxury Seafood Restaurant</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* [Mantengo todo el CSS anterior casi igual, solo agrego/ajusto lo siguiente] */
+        /* Reset and Base Styles */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #f5f5f5;
+            background: #001428;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-        /* Mejoras menores mobile */
+        /* Animated Ocean Background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #001428 0%, #0b1e38 100%);
+            animation: slowGradient 40s ease infinite alternate;
+            z-index: -2;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212,175,55,0.03) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(212,175,55,0.02) 0%, transparent 30%),
+                linear-gradient(to right, transparent 0%, rgba(212,175,55,0.01) 50%, transparent 100%);
+            animation: slowWave 60s linear infinite;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        @keyframes slowGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes slowWave {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(10%); }
+        }
+
+        /* Floating Golden Particles */
+        .particle {
+            position: fixed;
+            background: radial-gradient(circle, #d4af37 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: -1;
+        }
+        @keyframes riseAndFade {
+            0% { transform: translateY(100vh) scale(0.2); opacity: 0; }
+            20% { opacity: 0.4; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) scale(0.8); opacity: 0; }
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: #d4af37; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header & Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(11, 30, 56, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .logo img { height: 48px; }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li { margin-left: 30px; }
+        .nav-links a {
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #d4af37; }
+
+        /* Social Icons in Header */
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+        .social-icons a img {
+            width: 36px;
+            height: 36px;
+            transition: transform 0.3s, filter 0.3s;
+            filter: brightness(1.1) drop-shadow(0 2px 4px rgba(212,175,55,0.3));
+        }
+        .social-icons a:hover img {
+            transform: scale(1.2);
+            filter: brightness(1.3) drop-shadow(0 4px 12px #d4af37);
+        }
+
+        /* Reservation buttons */
+        .reservation-btn-wrapper { display: flex; align-items: center; gap: 12px; }
+        .reservation-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 14px; border-radius: 6px;
+            font-weight: 600; font-size: 0.95rem;
+            transition: all 0.25s ease; white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .call-btn { background: #d4af37; color: #001f3f; }
+        .call-btn:hover { background: #e8c670; transform: translateY(-2px); }
+        .whatsapp-btn { background: #25D366; color: white; }
+        .whatsapp-btn:hover { background: #20b858; transform: translateY(-2px); }
+
+        /* Hero */
+        #hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative;
+        }
+        .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+        .hero-logo {
+            max-width: 90vw;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin-bottom: 30px;
+            display: block;
+            filter: drop-shadow(0 15px 35px rgba(212,175,55,0.4));
+            animation: fadeInScale 2.2s ease-out forwards, float 8s ease-in-out infinite;
+            animation-delay: 0.5s, 2.7s;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-15px); }
+        }
+        .hero-tagline { font-size: 1.4rem; margin-bottom: 35px; color: #f5f5f5; }
+        .hero-tagline span { font-size: 1.1rem; color: #d4af37; display: block; margin-top: 8px; }
+
+        /* Sections */
+        section { padding: 100px 0; opacity: 0; transform: translateY(50px); transition: opacity 0.8s, transform 0.8s; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 50px; }
+
+        /* Video Blocks */
+        .video-block {
+            background: rgba(11,30,56,0.6);
+            border: 1px solid #d4af37;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 60px auto;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .video-branding img { width: 180px; margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(212,175,55,0.4)); }
+        .video-branding p { font-size: 1.3rem; color: #d4af37; margin-bottom: 25px; font-weight: 600; }
+
+        /* Gallery, Menu photos, Footer, Lightbox, Mobile ... (mantengo lo anterior, solo agrego consistencia) */
+        .gallery-grid, .menu-photos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .gallery-item, .menu-photo-item {
+            position: relative; overflow: hidden; border-radius: 12px;
+            border: 2px solid #d4af37; box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            transition: all 0.35s ease; cursor: pointer;
+        }
+        .gallery-item:hover, .menu-photo-item:hover { transform: translateY(-8px); box-shadow: 0 14px 32px rgba(212,175,55,0.25); }
+        img { transition: transform 0.45s ease; }
+        .gallery-item:hover img, .menu-photo-item:hover img { transform: scale(1.08); }
+
+        footer {
+            background: #001f3f; padding: 50px 0; text-align: center;
+        }
+        .footer-info { margin: 20px 0; font-size: 0.95rem; color: #c0c8d4; }
+        .social-links { display: flex; justify-content: center; gap: 40px; margin: 25px 0; }
+        .social-links img { width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s; }
+        .social-links a:hover img { transform: scale(1.18) translateY(-3px); }
+
+        /* Lightbox (agregar JS después) */
+        #lightbox {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 2000;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; }
+        #close-lightbox { position: absolute; top: 30px; right: 30px; color: #fff; font-size: 2.5rem; cursor: pointer; }
+
+        /* Mobile */
         @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #0b1e38; padding: 20px 0; }
+            .nav-links.active { display: flex; }
+            .hamburger { display: flex; flex-direction: column; cursor: pointer; }
+            .hamburger span { height: 3px; width: 28px; background: #f5f5f5; margin: 4px 0; transition: 0.3s; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+            .reservation-btn-wrapper { gap: 8px; }
+            .btn-text { display: none; }
+            .reservation-btn { padding: 8px; width: 38px; height: 38px; justify-content: center; border-radius: 50%; }
             .hero-logo { max-width: 85vw; margin-bottom: 20px; }
             h2 { font-size: 2.4rem; }
             .video-block { padding: 20px; margin: 40px auto; }
@@ -27,9 +228,9 @@
 </head>
 <body>
 
-    <!-- Floating Particles (sin cambios) -->
+    <!-- Floating Particles -->
     <script>
-        for (let i = 0; i < 15; i++) {  // un par más para más magia
+        for (let i = 0; i < 15; i++) {
             let p = document.createElement('div');
             p.className = 'particle';
             p.style.width = p.style.height = Math.random() * 8 + 4 + 'px';
@@ -76,8 +277,8 @@
 
     <section id="hero">
         <div class="hero-content">
-            <!-- Logo actualizado - usa el más bonito/detallado -->
-            <img class="hero-logo" src="https://i.ibb.co/ksB8LBJc/file-00000000c7cc71fdb8e86704204dfdd9.png" alt="Monstruo de Mar">
+            <!-- Logo hero actualizado al colorido -->
+            <img class="hero-logo" src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar">
             <p class="hero-tagline">
                 Donde el Pacífico se convierte en sabor<br>
                 <span>Mariscos frescos • Experiencia única • Mazatlán</span>
@@ -89,7 +290,13 @@
         </div>
     </section>
 
-    <!-- Ejemplo de sección Signature Dishes con tus fotos reales -->
+    <section id="about">
+        <div class="container">
+            <h2>Sobre Nosotros</h2>
+            <p>Monstruo de Mar es un restaurante de mariscos de lujo ubicado en Mazatlán, Sinaloa. Ofrecemos los sabores más auténticos del Pacífico con ingredientes frescos y una experiencia inolvidable.</p>
+        </div>
+    </section>
+
     <section id="signature">
         <div class="container">
             <h2>Nuestras Especialidades</h2>
@@ -98,12 +305,76 @@
                 <div class="gallery-item"><img src="https://i.ibb.co/VcgkY8FB/Screenshot-20260201-135631-com-facebook-katana-Immersive-Portrait-Activity.jpg" alt="Aguachile"></div>
                 <div class="gallery-item"><img src="https://i.ibb.co/9kPpKcfr/Screenshot-20260201-134722.jpg" alt="Tacos de mariscos"></div>
                 <div class="gallery-item"><img src="https://i.ibb.co/pj82QSpL/Screenshot-20260201-134702.jpg" alt="Camarones"></div>
-                <!-- Agrega más de tus fotos aquí -->
+                <div class="gallery-item"><img src="https://i.ibb.co/8D1ySBsF/Screenshot-20260201-134645.jpg" alt="Pulpo"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/8DZF5kL3/Screenshot-20260201-134621.jpg" alt="Mariscos variados"></div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de video (sin cambios mayores) -->
+    <section id="menu">
+        <div class="container">
+            <h2>Menú</h2>
+            <p>Descubre nuestra selección de platillos premium. (Agrega más detalles o PDF aquí si lo deseas).</p>
+            <div class="menu-photos-grid">
+                <!-- Reutiliza fotos o agrega más -->
+                <div class="menu-photo-item"><img src="https://i.ibb.co/wFR5Lf1q/Screenshot-20260201-140035.jpg" alt="Platillo 1"></div>
+                <div class="menu-photo-item"><img src="https://i.ibb.co/20VVyzhT/Screenshot-20260201-140012.jpg" alt="Platillo 2"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <h2>Galería</h2>
+            <div class="gallery-grid">
+                <!-- Todas las fotos subidas como galería -->
+                <div class="gallery-item"><img src="https://i.ibb.co/wFR5Lf1q/Screenshot-20260201-140035.jpg" alt="Galería 1"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/20VVyzhT/Screenshot-20260201-140012.jpg" alt="Galería 2"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/LD0jHfjn/Screenshot-20260201-135641-com-facebook-katana-Immersive-Portrait-Activity.jpg" alt="Galería 3"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/VcgkY8FB/Screenshot-20260201-135631-com-facebook-katana-Immersive-Portrait-Activity.jpg" alt="Galería 4"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/9kPpKcfr/Screenshot-20260201-134722.jpg" alt="Galería 5"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/pj82QSpL/Screenshot-20260201-134702.jpg" alt="Galería 6"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/8D1ySBsF/Screenshot-20260201-134645.jpg" alt="Galería 7"></div>
+                <div class="gallery-item"><img src="https://i.ibb.co/8DZF5kL3/Screenshot-20260201-134621.jpg" alt="Galería 8"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video">
+        <div class="container">
+            <h2>Descúbrenos en Video</h2>
+
+            <div class="video-block">
+                <div class="video-branding">
+                    <img src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar">
+                    <p>Síguenos en TikTok @monstruodemar</p>
+                </div>
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@alexander.delangel/video/7561224775121652999" data-video-id="7561224775121652999">
+                    <section><a target="_blank" href="https://www.tiktok.com/@alexander.delangel">@alexander.delangel</a></section>
+                </blockquote>
+            </div>
+
+            <div class="video-block">
+                <div class="video-branding">
+                    <img src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar">
+                    <p>Síguenos en Instagram @monstruodemar</p>
+                </div>
+                <!-- Placeholder para reel de Instagram; reemplaza con embed real cuando lo tengas -->
+                <iframe src="https://www.instagram.com/reel/DQ1-UaVCHIW/embed" width="100%" height="500" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+            </div>
+
+            <script async src="https://www.tiktok.com/embed.js"></script>
+        </div>
+    </section>
+
+    <section id="location">
+        <div class="container">
+            <h2>Ubicación</h2>
+            <p>Estamos en Mazatlán, Sinaloa. Visítanos en [dirección exacta].</p>
+            <!-- Agrega mapa embed si lo deseas -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.123456789!2d-106.4123456789!3d23.2345678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDE0JzA0LjQiTiAxMDbCsDI0JzQ1LjMiVw!5e0!3m2!1ses!2smx!4v1706800000000!5m2!1ses!2smx" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
@@ -120,7 +391,50 @@
         </div>
     </footer>
 
-    <!-- Lightbox y scripts sin cambios -->
+    <!-- Lightbox -->
+    <div id="lightbox">
+        <span id="close-lightbox">&times;</span>
+        <img src="" alt="Ampliar imagen">
+    </div>
 
+    <script>
+        // Hamburger menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        // Close menu on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Lightbox
+        document.querySelectorAll('.gallery-item, .menu-photo-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelector('#lightbox img').src = item.querySelector('img').src;
+                document.getElementById('lightbox').style.display = 'flex';
+            });
+        });
+        document.getElementById('close-lightbox').addEventListener('click', () => {
+            document.getElementById('lightbox').style.display = 'none';
+        });
+        document.getElementById('lightbox').addEventListener('click', e => {
+            if (e.target === document.getElementById('lightbox')) document.getElementById('lightbox').style.display = 'none';
+        });
+
+        // Scroll reveal sections
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(sec => observer.observe(sec));
+    </script>
 </body>
 </html>
