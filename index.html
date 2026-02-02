@@ -8,7 +8,6 @@
     <title>Monstruo de Mar - Luxury Seafood Restaurant</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Reset and Base Styles */
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
@@ -20,34 +19,49 @@
             overflow-x: hidden;
         }
 
-        /* Animated Ocean Background */
+        /* Ocean Animated Background - Gradient + Moving Waves + Particles */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, #001428 0%, #0b1e38 100%);
             animation: slowGradient 40s ease infinite alternate;
-            z-index: -2;
+            z-index: -3;
         }
-        body::after {
-            content: "";
+
+        /* Animated Waves Layers (3 capas para profundidad) */
+        .waves {
             position: fixed;
-            inset: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(212,175,55,0.03) 0%, transparent 25%),
-                radial-gradient(circle at 80% 70%, rgba(212,175,55,0.02) 0%, transparent 30%),
-                linear-gradient(to right, transparent 0%, rgba(212,175,55,0.01) 50%, transparent 100%);
-            animation: slowWave 60s linear infinite;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40vh;
+            min-height: 200px;
+            z-index: -2;
+            overflow: hidden;
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 105, 148, 0.4), transparent);
+            animation: waveMove 20s linear infinite;
+        }
+        .wave:nth-child(2) {
+            animation: waveMove 15s linear infinite reverse;
             opacity: 0.6;
-            z-index: -1;
+            background: linear-gradient(to top, rgba(0, 150, 200, 0.3), transparent);
         }
-        @keyframes slowGradient {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+        .wave:nth-child(3) {
+            animation: waveMove 25s linear infinite;
+            opacity: 0.4;
+            background: linear-gradient(to top, rgba(0, 80, 120, 0.5), transparent);
         }
-        @keyframes slowWave {
-            0% { transform: translateX(-10%); }
-            100% { transform: translateX(10%); }
+        @keyframes waveMove {
+            0% { transform: translateX(0) translateZ(0) scaleY(1); }
+            50% { transform: translateX(-25%) translateZ(0) scaleY(1.1); }
+            100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
         }
 
         /* Floating Golden Particles */
@@ -70,7 +84,7 @@
         a { text-decoration: none; color: inherit; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* Header & Navigation */
+        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -84,32 +98,24 @@
             align-items: center;
             padding: 15px 0;
         }
-        .logo img { height: 48px; }
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
+        .logo img { height: 48px; background: transparent; } /* Asegura sin fondo */
+
+        .nav-links { display: flex; list-style: none; }
         .nav-links li { margin-left: 30px; }
-        .nav-links a {
-            font-weight: 600;
-            transition: color 0.3s;
-        }
+        .nav-links a { font-weight: 600; transition: color 0.3s; }
         .nav-links a:hover { color: #d4af37; }
 
-        /* Social Icons in Header */
-        .social-icons {
-            display: flex;
-            gap: 16px;
-        }
+        .social-icons { display: flex; gap: 16px; }
         .social-icons a img {
             width: 36px;
             height: 36px;
+            background: transparent; /* Sin fondo */
             transition: transform 0.3s, filter 0.3s;
             filter: brightness(1.1) drop-shadow(0 2px 4px rgba(212,175,55,0.3));
         }
         .social-icons a:hover img {
             transform: scale(1.2);
-            filter: brightness(1.3) drop-shadow(0 4px 12px #d4af37);
+            filter: brightness(1.4) drop-shadow(0 6px 16px #d4af37);
         }
 
         /* Reservation buttons */
@@ -140,17 +146,15 @@
             height: auto;
             margin-bottom: 30px;
             display: block;
+            background: transparent; /* Sin fondo */
             filter: drop-shadow(0 15px 35px rgba(212,175,55,0.4));
-            animation: fadeInScale 2.2s ease-out forwards, float 8s ease-in-out infinite;
-            animation-delay: 0.5s, 2.7s;
+            animation: floatWave 12s ease-in-out infinite;
         }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.85); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-        @keyframes float {
-            0%,100% { transform: translateY(0); }
-            50%     { transform: translateY(-15px); }
+        @keyframes floatWave {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(1deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-25px) rotate(0.5deg); }
         }
         .hero-tagline { font-size: 1.4rem; margin-bottom: 35px; color: #f5f5f5; }
         .hero-tagline span { font-size: 1.1rem; color: #d4af37; display: block; margin-top: 8px; }
@@ -160,7 +164,6 @@
         section.visible { opacity: 1; transform: translateY(0); }
         h2 { font-size: 3rem; text-align: center; margin-bottom: 50px; }
 
-        /* Video Blocks */
         .video-block {
             background: rgba(11,30,56,0.6);
             border: 1px solid #d4af37;
@@ -171,10 +174,9 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .video-branding img { width: 180px; margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(212,175,55,0.4)); }
+        .video-branding img { width: 180px; margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(212,175,55,0.4)); background: transparent; }
         .video-branding p { font-size: 1.3rem; color: #d4af37; margin-bottom: 25px; font-weight: 600; }
 
-        /* Gallery, Menu photos, Footer, Lightbox, Mobile ... (mantengo lo anterior, solo agrego consistencia) */
         .gallery-grid, .menu-photos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
         .gallery-item, .menu-photo-item {
             position: relative; overflow: hidden; border-radius: 12px;
@@ -182,7 +184,7 @@
             transition: all 0.35s ease; cursor: pointer;
         }
         .gallery-item:hover, .menu-photo-item:hover { transform: translateY(-8px); box-shadow: 0 14px 32px rgba(212,175,55,0.25); }
-        img { transition: transform 0.45s ease; }
+        img { transition: transform 0.45s ease; background: transparent; }
         .gallery-item:hover img, .menu-photo-item:hover img { transform: scale(1.08); }
 
         footer {
@@ -190,10 +192,10 @@
         }
         .footer-info { margin: 20px 0; font-size: 0.95rem; color: #c0c8d4; }
         .social-links { display: flex; justify-content: center; gap: 40px; margin: 25px 0; }
-        .social-links img { width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s; }
+        .social-links img { width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s; background: transparent; }
         .social-links a:hover img { transform: scale(1.18) translateY(-3px); }
 
-        /* Lightbox (agregar JS después) */
+        /* Lightbox */
         #lightbox {
             display: none; position: fixed; inset: 0;
             background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 2000;
@@ -215,6 +217,7 @@
             .reservation-btn { padding: 8px; width: 38px; height: 38px; justify-content: center; border-radius: 50%; }
             .hero-logo { max-width: 85vw; margin-bottom: 20px; }
             h2 { font-size: 2.4rem; }
+            .waves { height: 30vh; }
             .video-block { padding: 20px; margin: 40px auto; }
             .reservation-btn-wrapper { gap: 6px; }
         }
@@ -241,10 +244,18 @@
         }
     </script>
 
+    <!-- Animated Ocean Waves -->
+    <div class="waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
     <header>
         <nav class="container">
             <div class="logo">
-                <img src="https://i.ibb.co/ksB8LBJc/file-00000000c7cc71fdb8e86704204dfdd9.png" alt="Monstruo de Mar Small Logo">
+                <!-- Logo pequeño colorido y transparente -->
+                <img src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar Small Logo">
             </div>
 
             <ul class="nav-links">
@@ -258,10 +269,10 @@
             </ul>
 
             <div class="social-icons">
-                <!-- Íconos gold transparentes (sube tus PNG o usa estos ejemplos) -->
-                <a href="https://www.facebook.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/5YkP3q0/gold-facebook-icon-png.png" alt="Facebook" onerror="this.src='https://via.placeholder.com/36/FFD700/001428?text=FB'"></a>
-                <a href="https://www.instagram.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/qF3jL0Z/gold-instagram-icon-png.png" alt="Instagram" onerror="this.src='https://via.placeholder.com/36/FFD700/001428?text=IG'"></a>
-                <a href="https://www.tiktok.com/@monstruodemar" target="_blank"><img src="https://i.ibb.co/7rYkB2T/gold-tiktok-icon-png.png" alt="TikTok" onerror="this.src='https://via.placeholder.com/36/FFD700/001428?text=TT'"></a>
+                <!-- Gold transparentes sin fondo (usando links a PNG transparentes gold) -->
+                <a href="https://www.facebook.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/vBRLh1m/gold-facebook-transparent.png" alt="Facebook"></a>
+                <a href="https://www.instagram.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/5r7P7sX/gold-instagram-transparent.png" alt="Instagram"></a>
+                <a href="https://www.tiktok.com/@monstruodemar" target="_blank"><img src="https://i.ibb.co/0y4pF2Z/gold-tiktok-transparent.png" alt="TikTok"></a>
             </div>
 
             <div class="reservation-btn-wrapper">
@@ -277,7 +288,7 @@
 
     <section id="hero">
         <div class="hero-content">
-            <!-- Logo hero actualizado al colorido -->
+            <!-- Logo grande colorido, transparente, con animación wave/float -->
             <img class="hero-logo" src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar">
             <p class="hero-tagline">
                 Donde el Pacífico se convierte en sabor<br>
@@ -314,9 +325,8 @@
     <section id="menu">
         <div class="container">
             <h2>Menú</h2>
-            <p>Descubre nuestra selección de platillos premium. (Agrega más detalles o PDF aquí si lo deseas).</p>
+            <p>Descubre nuestra selección de platillos premium.</p>
             <div class="menu-photos-grid">
-                <!-- Reutiliza fotos o agrega más -->
                 <div class="menu-photo-item"><img src="https://i.ibb.co/wFR5Lf1q/Screenshot-20260201-140035.jpg" alt="Platillo 1"></div>
                 <div class="menu-photo-item"><img src="https://i.ibb.co/20VVyzhT/Screenshot-20260201-140012.jpg" alt="Platillo 2"></div>
             </div>
@@ -327,7 +337,6 @@
         <div class="container">
             <h2>Galería</h2>
             <div class="gallery-grid">
-                <!-- Todas las fotos subidas como galería -->
                 <div class="gallery-item"><img src="https://i.ibb.co/wFR5Lf1q/Screenshot-20260201-140035.jpg" alt="Galería 1"></div>
                 <div class="gallery-item"><img src="https://i.ibb.co/20VVyzhT/Screenshot-20260201-140012.jpg" alt="Galería 2"></div>
                 <div class="gallery-item"><img src="https://i.ibb.co/LD0jHfjn/Screenshot-20260201-135641-com-facebook-katana-Immersive-Portrait-Activity.jpg" alt="Galería 3"></div>
@@ -359,7 +368,7 @@
                     <img src="https://i.ibb.co/5H4DBJg/IMG-20260201-134127.png" alt="Monstruo de Mar">
                     <p>Síguenos en Instagram @monstruodemar</p>
                 </div>
-                <!-- Placeholder para reel de Instagram; reemplaza con embed real cuando lo tengas -->
+                <!-- Placeholder para reel de Instagram -->
                 <iframe src="https://www.instagram.com/reel/DQ1-UaVCHIW/embed" width="100%" height="500" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
             </div>
 
@@ -371,7 +380,6 @@
         <div class="container">
             <h2>Ubicación</h2>
             <p>Estamos en Mazatlán, Sinaloa. Visítanos en [dirección exacta].</p>
-            <!-- Agrega mapa embed si lo deseas -->
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.123456789!2d-106.4123456789!3d23.2345678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDE0JzA0LjQiTiAxMDbCsDI0JzQ1LjMiVw!5e0!3m2!1ses!2smx!4v1706800000000!5m2!1ses!2smx" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </section>
@@ -383,10 +391,10 @@
                 <p>Reservaciones recomendadas los fines de semana</p>
             </div>
             <div class="social-links">
-                <!-- Mismos íconos gold que en header -->
-                <a href="https://www.facebook.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/5YkP3q0/gold-facebook-icon-png.png" alt="Facebook"></a>
-                <a href="https://www.instagram.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/qF3jL0Z/gold-instagram-icon-png.png" alt="Instagram"></a>
-                <a href="https://www.tiktok.com/@monstruodemar" target="_blank"><img src="https://i.ibb.co/7rYkB2T/gold-tiktok-icon-png.png" alt="TikTok"></a>
+                <!-- Mismos íconos gold transparentes -->
+                <a href="https://www.facebook.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/vBRLh1m/gold-facebook-transparent.png" alt="Facebook"></a>
+                <a href="https://www.instagram.com/monstruodemar" target="_blank"><img src="https://i.ibb.co/5r7P7sX/gold-instagram-transparent.png" alt="Instagram"></a>
+                <a href="https://www.tiktok.com/@monstruodemar" target="_blank"><img src="https://i.ibb.co/0y4pF2Z/gold-tiktok-transparent.png" alt="TikTok"></a>
             </div>
         </div>
     </footer>
@@ -405,7 +413,6 @@
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
-        // Close menu on link click
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
